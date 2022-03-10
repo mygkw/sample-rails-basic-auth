@@ -1,4 +1,8 @@
 class SamplesController < ApplicationController
+  include ActionController::HttpAuthentication::Basic::ControllerMethods
+
+  before_action :basic_auth
+
   # GET /samples
   def index
      render json: { status: "ok"}
@@ -22,5 +26,13 @@ class SamplesController < ApplicationController
   # DELETE /samples/1
   def destroy
     render json: { status: "ok"}
+  end
+
+  private
+
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == "hoge" && password == "fuga"
+    end
   end
 end
